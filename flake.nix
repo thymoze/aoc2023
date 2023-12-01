@@ -16,17 +16,3 @@
       };
     };
 }
-
-
-#{
-#  inputs = {
-#    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-#    flake-utils.url = "github:numtide/flake-utils";
-#    roc.url = "github:roc-lang/roc";
-#  };
-#
-#  outputs = { self, nixpkgs, flake-utils, roc, ... }:
-#    #flake-utils.lib.eachDefaultSystem (system:
-#      
-#    #);
-#}
