@@ -30,7 +30,8 @@ findNumber = \line ->
     begin <- List.findFirstIndex line (\v -> Str.fromUtf8 [v] |> Result.try Str.toU32 |> Result.isOk) |> Result.try
 
     rest = List.takeLast line ((List.len line) - begin)
-    end <- List.findFirstIndex rest (\v -> Str.fromUtf8 [v] |> Result.try Str.toU32 |> Result.isErr) |> Result.try
+    end = List.findFirstIndex rest (\v -> Str.fromUtf8 [v] |> Result.try Str.toU32 |> Result.isErr) 
+        |> Result.withDefault (List.len rest) # The number extends to the end of the string
 
     numStr = List.sublist line { start: begin, len: end }
 
@@ -75,14 +76,7 @@ searchNeighbors = \lines, lineIdx, symbolIdx ->
         List.range { start: At begin, end: Before end }
         |> List.any (\v -> List.contains [symbolIdx - 1, symbolIdx, symbolIdx + 1] v)
     )
-    
 
-pad = \lines -> 
-    lineLength = List.first lines |> Result.map Str.countUtf8Bytes |> Result.withDefault 0
-    lines
-    |> List.prepend (Str.repeat "." lineLength)
-    |> List.append (Str.repeat "." lineLength)
-    |> List.map (\line -> ".\(line).")
 
 part1 = \lines ->
     List.walkWithIndex lines [] (\state, line, i -> 
@@ -116,7 +110,6 @@ part2 = \lines ->
 main =
     lines = input
         |> Str.split "\n"
-        |> pad
         |> List.map Str.toUtf8
 
     _ <- part1 lines |> Num.toStr |> Stdout.line |> Task.await
