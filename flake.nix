@@ -8,11 +8,19 @@
   outputs = { self, nixpkgs, roc }:
     let
       system = "x86_64-linux";
-      overlay = (_: _: { roc-cli = roc.packages.${system}.default; });
-      pkgs = import nixpkgs { inherit system; overlays = [ overlay ]; };
+      pkgs = import nixpkgs { inherit system; };
+      rocPkgs = roc.packages.${system};
+      rocFull = rocPkgs.full;
     in {
-      devShells.${system}.default = pkgs.mkShell {
-        nativeBuildInputs = with pkgs.buildPackages; [ roc-cli ];
+      formatter = pkgs.nixpkgs-fmt;
+      devShells.${system} = {
+        default = pkgs.mkShell {
+          buildInputs = with pkgs; [ rocFull ];
+
+          shellHook = ''
+            export ROC_LSP_PATH=${rocFull}/bin/roc_ls
+          '';
+        };
       };
     };
 }
