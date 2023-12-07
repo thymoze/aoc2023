@@ -1,3 +1,7 @@
-# Advent of Code 2023
+<center>
 
-[🎄🌟](https://adventofcode.com/2023)
+# [🎄 Advent of Code 2023 🌟](https://adventofcode.com/2023)
+
+written in [🕊️ Roc](https://www.roc-lang.org/)
+
+</center>
